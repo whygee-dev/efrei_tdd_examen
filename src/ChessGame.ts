@@ -1,8 +1,8 @@
 export class ChessGame {
-  private board: string[][];
+  #board: string[][];
 
   constructor() {
-    this.board = [
+    this.#board = [
       ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
       ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
       [" ", " ", " ", " ", " ", " ", " ", " "],
@@ -14,7 +14,21 @@ export class ChessGame {
     ];
   }
 
+  get board() {
+    return this.#board;
+  }
+
   constructBoard() {
+    const board = this.#board.map((row, i) => {
+      return 8 - i + " " + row.join(" ");
+    });
+
+    board.push("  a b c d e f g h");
+
+    return board.join("\n");
+  }
+
+  movePiece(from: string, to: string) {
     throw new Error("Not implemented");
   }
 }
