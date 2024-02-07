@@ -185,53 +185,51 @@ describe("ChessGame", () => {
   });
 
   describe("killPiece()", () => {
-    it("should remove a piece from the board", () => {
+    it("should remove a piece from the board at the specified position", () => {
       // Arrange
       const game = new ChessGame();
       const initialBoard = [
+        ["♜", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", "♜", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "], // Place a piece at the specified position
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
       ];
-
-      game["_board"] = initialBoard; // Accès direct à la propriété privée
-
-      const positionToKill = { row: 3, column: 3 };
-
+  
+      game["_board"] = initialBoard;
+  
+      const positionToKill = { row: 1, column: 1 }; // Specify the position of the piece to be killed
+  
       // Act
       game.killPiece(positionToKill);
-
+  
       // Assert
-      expect(game["_board"][positionToKill.row][positionToKill.column]).toBe(" "); // Check if piece is removed from the board
+      expect(game["_board"][positionToKill.row][positionToKill.column]).toBe(" ");
     });
-
+    
     it("should throw an error if trying to kill a piece at an invalid position", () => {
       // Arrange
       const game = new ChessGame();
-      const initialBoard = [
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", "♜", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-      ];
-
-      game["_board"] = initialBoard; // Accès direct à la propriété privée
-
       const invalidPosition = { row: 10, column: 10 };
-
+    
       // Act & Assert
       expect(() => {
         game.killPiece(invalidPosition);
       }).toThrowError("Invalid position");
+    });
+    
+    it("should throw an error if there is no piece at the specified position", () => {
+      // Arrange
+      const game = new ChessGame();
+      const positionWithNoPiece = { row: 2, column: 2 }; // Empty position
+    
+      // Act & Assert
+      expect(() => {
+        game.killPiece(positionWithNoPiece);
+      }).toThrowError("No piece at the specified position");
     });
   });
 });
