@@ -35,4 +35,9 @@ export class ChessGame {
   killPiece(position: { row: number, column: number }): void {
     // TODO: Implementer la logique pour supprimer une pièce du plateau
   }
+
+  canMovePiece(initialPosition: { row: number, column: number }, newPosition: { row: number, column: number }): boolean {
+    // Method declaration without implementation
+    throw new Error("Method not implemented");
+  }
 }
