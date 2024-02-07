@@ -19,7 +19,15 @@ export class ChessGame {
   }
 
   set board(board: string[][]) {
-    throw new Error("Not implemented");
+    if (board.length !== 8) {
+      throw new Error("Invalid board size");
+    }
+
+    if (board.some((row) => row.length !== 8)) {
+      throw new Error("Invalid board size");
+    }
+
+    this.#board = board;
   }
 
   constructBoard() {
