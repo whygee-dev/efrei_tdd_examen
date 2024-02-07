@@ -63,22 +63,24 @@ export class ChessGame {
     // TODO: Implementer la logique pour supprimer une pièce du plateau
   }
 
-  canMovePiece(initialPosition: { row: number, column: number }, newPosition: { row: number, column: number }): boolean {
-   
+  canMovePiece(initialSquare: string, newSquare: string): boolean {
+    const initialCoords = this.getCoords(initialSquare);
+    const newCoords = this.getCoords(newSquare);
+
     if (
-      newPosition.row < 0 ||
-      newPosition.row >= this.#board.length ||
-      newPosition.column < 0 ||
-      newPosition.column >= this.#board[0].length
+      newCoords[0] < 0 ||
+      newCoords[0] >= this.#board.length ||
+      newCoords[1] < 0 ||
+      newCoords[1] >= this.#board[0].length
     ) {
       return false;
     }
 
-   
-    const piece = this.#board[initialPosition.row][initialPosition.column];
+    const piece = this.#board[initialCoords[0]][initialCoords[1]];
     if (piece === " ") {
       return false; 
     }
-    return this.#board[newPosition.row][newPosition.column] === " ";
+    return this.#board[newCoords[0]][newCoords[1]] === " ";
   }
+
 }
