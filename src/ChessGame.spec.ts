@@ -65,32 +65,41 @@ describe("ChessGame", () => {
 
   describe("canMovePiece", () => {
     it("should return true if a piece can move to a new position", () => {
+      // Arrange
       const game = new ChessGame();
-      const initialPosition = { row: 6, column: 4 };
-      const newPosition = { row: 5, column: 4 };
+      const initialPosition = { row: 6, column: 4 }; 
+      const newPosition = { row: 5, column: 4 }; 
 
+      // Act
       const canMove = game.canMovePiece(initialPosition, newPosition);
 
+      // Assert
       expect(canMove).toBe(true);
     });
 
     it("should return false if the new position is out of bounds", () => {
+      // Arrange
       const game = new ChessGame();
       const initialPosition = { row: 6, column: 4 };
       const newPosition = { row: -1, column: 4 };
 
+      // Act
       const canMove = game.canMovePiece(initialPosition, newPosition);
 
+      // Assert
       expect(canMove).toBe(false);
     });
 
     it("should return false if there is no piece at the initial position", () => {
+      // Arrange
       const game = new ChessGame();
       const initialPosition = { row: 4, column: 4 };
       const newPosition = { row: 3, column: 4 };
 
+      // Act
       const canMove = game.canMovePiece(initialPosition, newPosition);
 
+      // Assert
       expect(canMove).toBe(false);
     });
 

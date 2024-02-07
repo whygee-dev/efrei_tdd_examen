@@ -64,7 +64,21 @@ export class ChessGame {
   }
 
   canMovePiece(initialPosition: { row: number, column: number }, newPosition: { row: number, column: number }): boolean {
-    // Method declaration without implementation
-    throw new Error("Method not implemented");
+   
+    if (
+      newPosition.row < 0 ||
+      newPosition.row >= this.#board.length ||
+      newPosition.column < 0 ||
+      newPosition.column >= this.#board[0].length
+    ) {
+      return false;
+    }
+
+   
+    const piece = this.#board[initialPosition.row][initialPosition.column];
+    if (piece === " ") {
+      return false; 
+    }
+    return this.#board[newPosition.row][newPosition.column] === " ";
   }
 }
