@@ -168,10 +168,82 @@ describe("ChessGame", () => {
       ];
 
       // Act
-      game.castling();
+      game.castling("white", "king");
 
       // Assert
       expect(game.board).toEqual(expectedBoard);
+    });
+
+    it("should throw an error while castling(white, king) if king has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("e1", "d1");
+      game.movePiece("h1", "g1");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("white", "king");
+      }).toThrowError("White king has already moved");
+    });
+
+    it("should throw an error while castling(white, king) if rook king side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h1", "g1");
+      game.movePiece("a1", "b1");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("white", "king");
+      }).toThrowError("White king side rook has already moved");
+    });
+
+    it("should throw an error while castling(white, queen) if rook queen side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h1", "g1");
+      game.movePiece("a1", "b1");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("white", "queen");
+      }).toThrowError("White queen side rook has already moved");
+    });
+
+    it("should throw an error while castling(black, king) if king has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("e8", "d8");
+      game.movePiece("h8", "g8");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("black", "king");
+      }).toThrowError("Black king has already moved");
+    });
+
+    it("should throw an error while castling(black, king) if rook king side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h8", "g8");
+      game.movePiece("a8", "b8");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("black", "king");
+      }).toThrowError("Black king side rook has already moved");
+    });
+
+    it("should throw an error while castling(white, queen) if rook queen side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h8", "g8");
+      game.movePiece("a8", "b8");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("black", "queen");
+      }).toThrowError("Black queen side rook has already moved");
     });
   });
 
