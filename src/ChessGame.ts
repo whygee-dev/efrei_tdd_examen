@@ -29,6 +29,17 @@ export class ChessGame {
   }
 
   movePiece(from: string, to: string) {
-    throw new Error("Not implemented");
+    const fromCoords = this.getCoords(from);
+    const toCoords = this.getCoords(to);
+
+    this.board[toCoords[0]][toCoords[1]] = this.board[fromCoords[0]][fromCoords[1]];
+    this.board[fromCoords[0]][fromCoords[1]] = " ";
+  }
+
+  private getCoords(square: string) {
+    const row = 8 - parseInt(square[1]);
+    const col = square.charCodeAt(0) - "a".charCodeAt(0);
+
+    return [row, col];
   }
 }

@@ -45,5 +45,26 @@ describe("ChessGame", () => {
       // Assert
       expect(game.board).toEqual(expectedBoard);
     });
+
+    it("should move a piece from a7 to a3", () => {
+      // Arrange
+      const game = new ChessGame();
+      const expectedBoard = [
+        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+        [" ", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        ["♟", " ", " ", " ", " ", " ", " ", " "],
+        ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
+        ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
+      ];
+
+      // Act
+      game.movePiece("a7", "a3");
+
+      // Assert
+      expect(game.board).toEqual(expectedBoard);
+    });
   });
 });
