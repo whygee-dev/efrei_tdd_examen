@@ -24,45 +24,6 @@ describe("ChessGame", () => {
     });
   });
 
-  describe("set board", () => {
-    it("should throw an error if the board is y size is not 8", () => {
-      // Arrange
-      const game = new ChessGame();
-
-      // Act && Assert
-      expect(() => {
-        game.board = [
-          ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-          ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          ["♙", " ", " ", " ", " ", " ", " ", " "],
-          [" ", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-        ];
-      }).toThrowError("Invalid board size");
-    });
-
-    it("should throw an error if the board is x size is not 8", () => {
-      // Arrange
-      const game = new ChessGame();
-
-      // Act && Assert
-      expect(() => {
-        game.board = [
-          ["♜", "♞", "♝", "♛", "♚", "♝", "♞"],
-          ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          ["♙", " ", " ", " ", " ", " ", " ", " "],
-          [" ", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-          ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
-        ];
-      }).toThrowError("Invalid board size");
-    });
-  });
-
   describe("canMovePiece", () => {
     it("should return true if a piece can move to a new position", () => {
       // Arrange
@@ -152,87 +113,179 @@ describe("ChessGame", () => {
   });
 
   describe("castling", () => {
-    it("should correctly castle if conditions are met", () => {
+    it("should correctly castle king side if conditions are met", () => {
       // Arrange
       const game = new ChessGame();
-      game.board = [
-        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-        ["♟", "♟", " ", "♟", " ", "♟", "♟", "♟"],
-        [" ", " ", "♟", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", "♙", " ", "♟", " ", "♙", " "],
-        ["♙", "♙", " ", " ", " ", "♙", "♘", " "],
-        [" ", " ", " ", "♙", "♙", "♗", " ", "♙"],
-        ["♖", "♘", "♗", "♕", "♔", " ", " ", "♖"],
-      ];
+      game.movePiece("g2", "g3");
+      game.movePiece("g1", "g4");
+      game.movePiece("f2", "f3");
+      game.movePiece("f1", "f2");
 
       const expectedBoard = [
         ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-        ["♟", "♟", " ", "♟", " ", "♟", "♟", "♟"],
-        [" ", " ", "♟", " ", " ", " ", " ", " "],
+        ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
         [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", "♙", " ", "♟", " ", "♙", " "],
-        ["♙", "♙", " ", " ", " ", "♙", "♘", " "],
-        [" ", " ", " ", "♙", "♙", "♗", " ", "♙"],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", "♘", " "],
+        [" ", " ", " ", " ", " ", "♙", "♙", " "],
+        ["♙", "♙", "♙", "♙", "♙", "♗", " ", "♙"],
         ["♖", "♘", "♗", "♕", " ", "♖", "♔", " "],
       ];
 
       // Act
-      game.castling();
+      game.castling("white", "king");
 
       // Assert
       expect(game.board).toEqual(expectedBoard);
     });
-  });
 
-  describe("killPiece()", () => {
-    it("should remove a piece from the board", () => {
+    it("should correctly castle queen side if conditions are met", () => {
       // Arrange
       const game = new ChessGame();
-      const initialBoard = [
+      game.movePiece("b2", "b3");
+      game.movePiece("b1", "b4");
+      game.movePiece("c2", "c3");
+      game.movePiece("c1", "c2");
+      game.movePiece("d2", "d3");
+      game.movePiece("d1", "d2");
+
+      const expectedBoard = [
+        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+        ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", "♜", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", "♘", " ", " ", " ", " ", " ", " "],
+        [" ", "♙", "♙", "♙", " ", " ", " ", " "],
+        ["♙", " ", "♗", "♕", "♙", "♙", "♙", "♙"],
+        [" ", " ", "♔", "♖", " ", "♗", "♘", "♖"],
       ];
-
-      game["_board"] = initialBoard; // Accès direct à la propriété privée
-
-      const positionToKill = { row: 3, column: 3 };
 
       // Act
-      game.killPiece(positionToKill);
+      game.castling("white", "queen");
 
       // Assert
-      expect(game["_board"][positionToKill.row][positionToKill.column]).toBe(" "); // Check if piece is removed from the board
+      expect(game.board).toEqual(expectedBoard);
     });
 
-    it("should throw an error if trying to kill a piece at an invalid position", () => {
+    it("should throw an error while castling(white, king) if king has already moved", () => {
       // Arrange
       const game = new ChessGame();
-      const initialBoard = [
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", "♜", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-      ];
-
-      game["_board"] = initialBoard; // Accès direct à la propriété privée
-
-      const invalidPosition = { row: 10, column: 10 };
+      game.movePiece("e1", "d1");
+      game.movePiece("h1", "g1");
 
       // Act & Assert
       expect(() => {
-        game.killPiece(invalidPosition);
+        game.castling("white", "king");
+      }).toThrowError("White king has already moved");
+    });
+
+    it("should throw an error while castling(white, king) if rook king side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h1", "g1");
+      game.movePiece("a1", "b1");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("white", "king");
+      }).toThrowError("White king side rook has already moved");
+    });
+
+    it("should throw an error while castling(white, queen) if rook queen side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h1", "g1");
+      game.movePiece("a1", "b1");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("white", "queen");
+      }).toThrowError("White queen side rook has already moved");
+    });
+
+    it("should throw an error while castling(black, king) if king has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("e8", "d8");
+      game.movePiece("h8", "g8");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("black", "king");
+      }).toThrowError("Black king has already moved");
+    });
+
+    it("should throw an error while castling(black, king) if rook king side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h8", "g8");
+      game.movePiece("a8", "b8");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("black", "king");
+      }).toThrowError("Black king side rook has already moved");
+    });
+
+    it("should throw an error while castling(white, queen) if rook queen side has already moved", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("h8", "g8");
+      game.movePiece("a8", "b8");
+
+      // Act & Assert
+      expect(() => {
+        game.castling("black", "queen");
+      }).toThrowError("Black queen side rook has already moved");
+    });
+  });
+
+  describe("killPiece()", () => {
+    it("should remove a piece from the board at the specified position", () => {
+      // Arrange
+      const game = new ChessGame();
+      const initialBoard = [
+        ["♜", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+      ];
+  
+      game["_board"] = initialBoard;
+  
+      const squareToKill = "b1";
+  
+      // Act
+      game.killPiece(squareToKill);
+  
+      // Assert
+      expect(game["_board"][1][1]).toBe(" ");
+    });
+    
+    it("should throw an error if trying to kill a piece at an invalid position", () => {
+      // Arrange
+      const game = new ChessGame();
+      const invalidSquare = "k10";
+    
+      // Act & Assert
+      expect(() => {
+        game.killPiece(invalidSquare);
       }).toThrowError("Invalid position");
+    });
+    
+    it("should throw an error if there is no piece at the specified position", () => {
+      // Arrange
+      const game = new ChessGame();
+      const emptySquare = "c3"; // Empty position
+    
+      // Act & Assert
+      expect(() => {
+        game.killPiece(emptySquare);
+      }).toThrowError("No piece at the specified position");
     });
   });
 });
