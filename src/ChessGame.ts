@@ -60,7 +60,17 @@ export class ChessGame {
   }
 
   killPiece(position: { row: number, column: number }): void {
-    // TODO: Implementer la logique pour supprimer une pièce du plateau
+    const { row, column } = position;
+    if (row < 0 || row >= this.#board.length || column < 0 || column >= this.#board[0].length) {
+      throw new Error("Invalid position");
+    }
+    
+    const piece = this.#board[row][column];
+    if (piece === " ") {
+      throw new Error("No piece at the specified position");
+    }
+  
+    this.#board[row][column] = " ";
   }
 
   canMovePiece(initialPosition: { row: number, column: number }, newPosition: { row: number, column: number }): boolean {
