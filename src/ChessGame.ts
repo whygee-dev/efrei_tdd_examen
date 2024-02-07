@@ -24,18 +24,6 @@ export class ChessGame {
     return this.#board;
   }
 
-  set board(board: string[][]) {
-    if (board.length !== 8) {
-      throw new Error("Invalid board size");
-    }
-
-    if (board.some((row) => row.length !== 8)) {
-      throw new Error("Invalid board size");
-    }
-
-    this.#board = board;
-  }
-
   constructBoard() {
     const board = this.#board.map((row, i) => {
       return 8 - i + " " + row.join(" ");
@@ -173,24 +161,18 @@ export class ChessGame {
     this.#board[row][column] = " ";
   }
 
-  canMovePiece(initialSquare: string, newSquare: string): boolean {
-    const initialCoords = this.getCoords(initialSquare);
-    const newCoords = this.getCoords(newSquare);
+  canMovePiece(from: string, to: string): boolean {
+    const initialCoords = this.getCoords(from);
+    const newCoords = this.getCoords(to);
 
-    if (
-      newCoords[0] < 0 ||
-      newCoords[0] >= this.#board.length ||
-      newCoords[1] < 0 ||
-      newCoords[1] >= this.#board[0].length
-    ) {
+    if (newCoords[0] < 0 || newCoords[0] >= this.#board.length || newCoords[1] < 0 || newCoords[1] >= this.#board[0].length) {
       return false;
     }
 
     const piece = this.#board[initialCoords[0]][initialCoords[1]];
     if (piece === " ") {
-      return false; 
+      return false;
     }
     return this.#board[newCoords[0]][newCoords[1]] === " ";
-}
-   
+  }
 }
