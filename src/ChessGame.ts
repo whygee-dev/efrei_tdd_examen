@@ -31,4 +31,8 @@ export class ChessGame {
   movePiece(from: string, to: string) {
     throw new Error("Not implemented");
   }
+
+  killPiece(position: { row: number, column: number }): void {
+    // TODO: Implementer la logique pour supprimer une pièce du plateau
+  }
 }

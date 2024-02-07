@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import { ChessGame } from "./ChessGame";
 
 describe("ChessGame", () => {
@@ -47,3 +47,64 @@ describe("ChessGame", () => {
     });
   });
 });
+
+describe('ChessGame', () => {
+  let chessGame: ChessGame;
+
+  beforeEach(() => {
+    chessGame = new ChessGame();
+  });
+
+  describe('killPiece()', () => {
+    it('should remove a piece from the board', () => {
+      // Arrange
+      const initialBoard = [
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", "♜", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+      ];
+
+      chessGame['_board'] = initialBoard; // Accès direct à la propriété privée
+
+      const positionToKill = { row: 3, column: 3 };
+
+      // Act
+      chessGame.killPiece(positionToKill);
+
+      // Assert
+      expect(chessGame['_board'][positionToKill.row][positionToKill.column]).toBe(" "); // Check if piece is removed from the board
+    });
+
+    it('should throw an error if trying to kill a piece at an invalid position', () => {
+      // Arrange
+      const initialBoard = [
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", "♜", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+      ];
+
+      chessGame['_board'] = initialBoard; // Accès direct à la propriété privée
+
+      const invalidPosition = { row: 10, column: 10 };
+
+      // Act & Assert
+      expect(() => {
+        chessGame.killPiece(invalidPosition);
+      }).toThrowError("Invalid position");
+    });
+  });
+});
+
+
+
+
