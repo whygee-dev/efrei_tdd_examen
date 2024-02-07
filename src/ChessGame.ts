@@ -157,12 +157,31 @@ export class ChessGame {
     }
   }
 
-  killPiece(position: { row: number; column: number }): void {
-    // TODO: Implementer la logique pour supprimer une pièce du plateau
+  killPiece(square: string): void {
+    const [row, column] = this.getCoords(square);
+
+    if (row < 0 || row >= this.#board.length || column < 0 || column >= this.#board[0].length) {
+      throw new Error("Invalid position");
+    }
+
+    const piece = this.#board[row][column];
+
+    if (piece === " ") {
+      throw new Error("No piece at the specified position");
+    }
+
+    this.#board[row][column] = " ";
   }
 
   canMovePiece(initialPosition: { row: number; column: number }, newPosition: { row: number; column: number }): boolean {
-    // Method declaration without implementation
-    throw new Error("Method not implemented");
+    if (newPosition.row < 0 || newPosition.row >= this.#board.length || newPosition.column < 0 || newPosition.column >= this.#board[0].length) {
+      return false;
+    }
+
+    const piece = this.#board[initialPosition.row][initialPosition.column];
+    if (piece === " ") {
+      return false;
+    }
+    return this.#board[newPosition.row][newPosition.column] === " ";
   }
 }
