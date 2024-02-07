@@ -18,6 +18,10 @@ export class ChessGame {
     return this.#board;
   }
 
+  set board(board: string[][]) {
+    throw new Error("Not implemented");
+  }
+
   constructBoard() {
     const board = this.#board.map((row, i) => {
       return 8 - i + " " + row.join(" ");
@@ -41,5 +45,9 @@ export class ChessGame {
     const col = square.charCodeAt(0) - "a".charCodeAt(0);
 
     return [row, col];
+  }
+
+  castling() {
+    throw new Error("Not implemented");
   }
 }

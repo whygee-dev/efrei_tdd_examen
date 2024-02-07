@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ChessGame } from "./ChessGame";
 
 describe("ChessGame", () => {
@@ -21,6 +21,45 @@ describe("ChessGame", () => {
 
       // Assert
       expect(board).toBe(expectedBoard);
+    });
+  });
+
+  describe("set board", () => {
+    it("should throw an error if the board is y size is not 8", () => {
+      // Arrange
+      const game = new ChessGame();
+
+      // Act && Assert
+      expect(() => {
+        game.board = [
+          ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+          ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
+          [" ", " ", " ", " ", " ", " ", " ", " "],
+          [" ", " ", " ", " ", " ", " ", " ", " "],
+          [" ", " ", " ", " ", " ", " ", " ", " "],
+          ["♙", " ", " ", " ", " ", " ", " ", " "],
+          [" ", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
+        ];
+      }).toThrowError("Invalid board size");
+    });
+
+    it("should throw an error if the board is x size is not 8", () => {
+      // Arrange
+      const game = new ChessGame();
+
+      // Act && Assert
+      expect(() => {
+        game.board = [
+          ["♜", "♞", "♝", "♛", "♚", "♝", "♞"],
+          ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
+          [" ", " ", " ", " ", " ", " ", " ", " "],
+          [" ", " ", " ", " ", " ", " ", " ", " "],
+          [" ", " ", " ", " ", " ", " ", " ", " "],
+          ["♙", " ", " ", " ", " ", " ", " ", " "],
+          [" ", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
+          ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
+        ];
+      }).toThrowError("Invalid board size");
     });
   });
 
@@ -62,6 +101,40 @@ describe("ChessGame", () => {
 
       // Act
       game.movePiece("a7", "a3");
+
+      // Assert
+      expect(game.board).toEqual(expectedBoard);
+    });
+  });
+
+  describe("castling", () => {
+    it("should correctly castle if conditions are met", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.board = [
+        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+        ["♟", "♟", " ", "♟", " ", "♟", "♟", "♟"],
+        [" ", " ", "♟", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", "♙", " ", "♟", " ", "♙", " "],
+        ["♙", "♙", " ", " ", " ", "♙", "♘", " "],
+        [" ", " ", " ", "♙", "♙", "♗", " ", "♙"],
+        ["♖", "♘", "♗", "♕", "♔", " ", " ", "♖"],
+      ];
+
+      const expectedBoard = [
+        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+        ["♟", "♟", " ", "♟", " ", "♟", "♟", "♟"],
+        [" ", " ", "♟", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", "♙", " ", "♟", " ", "♙", " "],
+        ["♙", "♙", " ", " ", " ", "♙", "♘", " "],
+        [" ", " ", " ", "♙", "♙", "♗", " ", "♙"],
+        ["♖", "♘", "♗", "♕", " ", "♖", "♔", " "],
+      ];
+
+      // Act
+      game.castling();
 
       // Assert
       expect(game.board).toEqual(expectedBoard);
