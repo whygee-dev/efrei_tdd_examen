@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
 import { ChessGame } from "./ChessGame";
 
 describe("ChessGame", () => {
@@ -61,6 +61,40 @@ describe("ChessGame", () => {
         ];
       }).toThrowError("Invalid board size");
     });
+  });
+
+  describe("canMovePiece", () => {
+    it("should return true if a piece can move to a new position", () => {
+      const game = new ChessGame();
+      const initialPosition = { row: 6, column: 4 };
+      const newPosition = { row: 5, column: 4 };
+
+      const canMove = game.canMovePiece(initialPosition, newPosition);
+
+      expect(canMove).toBe(true);
+    });
+
+    it("should return false if the new position is out of bounds", () => {
+      const game = new ChessGame();
+      const initialPosition = { row: 6, column: 4 };
+      const newPosition = { row: -1, column: 4 };
+
+      const canMove = game.canMovePiece(initialPosition, newPosition);
+
+      expect(canMove).toBe(false);
+    });
+
+    it("should return false if there is no piece at the initial position", () => {
+      const game = new ChessGame();
+      const initialPosition = { row: 4, column: 4 };
+      const newPosition = { row: 3, column: 4 };
+
+      const canMove = game.canMovePiece(initialPosition, newPosition);
+
+      expect(canMove).toBe(false);
+    });
+
+    // Add more test cases for different scenarios
   });
 
   describe("movePiece", () => {
@@ -138,6 +172,63 @@ describe("ChessGame", () => {
 
       // Assert
       expect(game.board).toEqual(expectedBoard);
+    });
+  });
+});
+
+describe("ChessGame", () => {
+  let chessGame: ChessGame;
+
+  beforeEach(() => {
+    chessGame = new ChessGame();
+  });
+
+  describe("killPiece()", () => {
+    it("should remove a piece from the board", () => {
+      // Arrange
+      const initialBoard = [
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", "♜", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+      ];
+
+      chessGame["_board"] = initialBoard; // Accès direct à la propriété privée
+
+      const positionToKill = { row: 3, column: 3 };
+
+      // Act
+      chessGame.killPiece(positionToKill);
+
+      // Assert
+      expect(chessGame["_board"][positionToKill.row][positionToKill.column]).toBe(" "); // Check if piece is removed from the board
+    });
+
+    it("should throw an error if trying to kill a piece at an invalid position", () => {
+      // Arrange
+      const initialBoard = [
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", "♜", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+      ];
+
+      chessGame["_board"] = initialBoard; // Accès direct à la propriété privée
+
+      const invalidPosition = { row: 10, column: 10 };
+
+      // Act & Assert
+      expect(() => {
+        chessGame.killPiece(invalidPosition);
+      }).toThrowError("Invalid position");
     });
   });
 });
