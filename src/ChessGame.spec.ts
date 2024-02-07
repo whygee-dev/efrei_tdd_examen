@@ -192,7 +192,7 @@ describe("ChessGame", () => {
         ["♜", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "], // Place a piece at the specified position
+        [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
@@ -201,34 +201,34 @@ describe("ChessGame", () => {
   
       game["_board"] = initialBoard;
   
-      const positionToKill = { row: 1, column: 1 }; // Specify the position of the piece to be killed
+      const squareToKill = "b1";
   
       // Act
-      game.killPiece(positionToKill);
+      game.killPiece(squareToKill);
   
       // Assert
-      expect(game["_board"][positionToKill.row][positionToKill.column]).toBe(" ");
+      expect(game["_board"][1][1]).toBe(" ");
     });
     
     it("should throw an error if trying to kill a piece at an invalid position", () => {
       // Arrange
       const game = new ChessGame();
-      const invalidPosition = { row: 10, column: 10 };
+      const invalidSquare = "k10";
     
       // Act & Assert
       expect(() => {
-        game.killPiece(invalidPosition);
+        game.killPiece(invalidSquare);
       }).toThrowError("Invalid position");
     });
     
     it("should throw an error if there is no piece at the specified position", () => {
       // Arrange
       const game = new ChessGame();
-      const positionWithNoPiece = { row: 2, column: 2 }; // Empty position
+      const emptySquare = "c3"; // Empty position
     
       // Act & Assert
       expect(() => {
-        game.killPiece(positionWithNoPiece);
+        game.killPiece(emptySquare);
       }).toThrowError("No piece at the specified position");
     });
   });

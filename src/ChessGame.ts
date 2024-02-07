@@ -59,8 +59,9 @@ export class ChessGame {
     throw new Error("Not implemented");
   }
 
-  killPiece(position: { row: number, column: number }): void {
-    const { row, column } = position;
+  killPiece(square: string): void {
+    const [row, column] = this.getCoords(square);
+
     if (row < 0 || row >= this.#board.length || column < 0 || column >= this.#board[0].length) {
       throw new Error("Invalid position");
     }
