@@ -174,18 +174,11 @@ describe("ChessGame", () => {
       expect(game.board).toEqual(expectedBoard);
     });
   });
-});
-
-describe("ChessGame", () => {
-  let chessGame: ChessGame;
-
-  beforeEach(() => {
-    chessGame = new ChessGame();
-  });
 
   describe("killPiece()", () => {
     it("should remove a piece from the board", () => {
       // Arrange
+      const game = new ChessGame();
       const initialBoard = [
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
@@ -197,19 +190,20 @@ describe("ChessGame", () => {
         [" ", " ", " ", " ", " ", " ", " ", " "],
       ];
 
-      chessGame["_board"] = initialBoard; // Accès direct à la propriété privée
+      game["_board"] = initialBoard; // Accès direct à la propriété privée
 
       const positionToKill = { row: 3, column: 3 };
 
       // Act
-      chessGame.killPiece(positionToKill);
+      game.killPiece(positionToKill);
 
       // Assert
-      expect(chessGame["_board"][positionToKill.row][positionToKill.column]).toBe(" "); // Check if piece is removed from the board
+      expect(game["_board"][positionToKill.row][positionToKill.column]).toBe(" "); // Check if piece is removed from the board
     });
 
     it("should throw an error if trying to kill a piece at an invalid position", () => {
       // Arrange
+      const game = new ChessGame();
       const initialBoard = [
         [" ", " ", " ", " ", " ", " ", " ", " "],
         [" ", " ", " ", " ", " ", " ", " ", " "],
@@ -221,13 +215,13 @@ describe("ChessGame", () => {
         [" ", " ", " ", " ", " ", " ", " ", " "],
       ];
 
-      chessGame["_board"] = initialBoard; // Accès direct à la propriété privée
+      game["_board"] = initialBoard; // Accès direct à la propriété privée
 
       const invalidPosition = { row: 10, column: 10 };
 
       // Act & Assert
       expect(() => {
-        chessGame.killPiece(invalidPosition);
+        game.killPiece(invalidPosition);
       }).toThrowError("Invalid position");
     });
   });
