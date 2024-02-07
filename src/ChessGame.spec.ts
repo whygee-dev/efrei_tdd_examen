@@ -24,45 +24,6 @@ describe("ChessGame", () => {
     });
   });
 
-  describe("set board", () => {
-    it("should throw an error if the board is y size is not 8", () => {
-      // Arrange
-      const game = new ChessGame();
-
-      // Act && Assert
-      expect(() => {
-        game.board = [
-          ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-          ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          ["♙", " ", " ", " ", " ", " ", " ", " "],
-          [" ", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-        ];
-      }).toThrowError("Invalid board size");
-    });
-
-    it("should throw an error if the board is x size is not 8", () => {
-      // Arrange
-      const game = new ChessGame();
-
-      // Act && Assert
-      expect(() => {
-        game.board = [
-          ["♜", "♞", "♝", "♛", "♚", "♝", "♞"],
-          ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          [" ", " ", " ", " ", " ", " ", " ", " "],
-          ["♙", " ", " ", " ", " ", " ", " ", " "],
-          [" ", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
-          ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"],
-        ];
-      }).toThrowError("Invalid board size");
-    });
-  });
-
   describe("canMovePiece", () => {
     it("should return true if a piece can move to a new position", () => {
       const game = new ChessGame();
@@ -142,33 +103,55 @@ describe("ChessGame", () => {
   });
 
   describe("castling", () => {
-    it("should correctly castle if conditions are met", () => {
+    it("should correctly castle king side if conditions are met", () => {
       // Arrange
       const game = new ChessGame();
-      game.board = [
-        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-        ["♟", "♟", " ", "♟", " ", "♟", "♟", "♟"],
-        [" ", " ", "♟", " ", " ", " ", " ", " "],
-        [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", "♙", " ", "♟", " ", "♙", " "],
-        ["♙", "♙", " ", " ", " ", "♙", "♘", " "],
-        [" ", " ", " ", "♙", "♙", "♗", " ", "♙"],
-        ["♖", "♘", "♗", "♕", "♔", " ", " ", "♖"],
-      ];
+      game.movePiece("g2", "g3");
+      game.movePiece("g1", "g4");
+      game.movePiece("f2", "f3");
+      game.movePiece("f1", "f2");
 
       const expectedBoard = [
         ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
-        ["♟", "♟", " ", "♟", " ", "♟", "♟", "♟"],
-        [" ", " ", "♟", " ", " ", " ", " ", " "],
+        ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
         [" ", " ", " ", " ", " ", " ", " ", " "],
-        [" ", " ", "♙", " ", "♟", " ", "♙", " "],
-        ["♙", "♙", " ", " ", " ", "♙", "♘", " "],
-        [" ", " ", " ", "♙", "♙", "♗", " ", "♙"],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", "♘", " "],
+        [" ", " ", " ", " ", " ", "♙", "♙", " "],
+        ["♙", "♙", "♙", "♙", "♙", "♗", " ", "♙"],
         ["♖", "♘", "♗", "♕", " ", "♖", "♔", " "],
       ];
 
       // Act
       game.castling("white", "king");
+
+      // Assert
+      expect(game.board).toEqual(expectedBoard);
+    });
+
+    it("should correctly castle queen side if conditions are met", () => {
+      // Arrange
+      const game = new ChessGame();
+      game.movePiece("b2", "b3");
+      game.movePiece("b1", "b4");
+      game.movePiece("c2", "c3");
+      game.movePiece("c1", "c2");
+      game.movePiece("d2", "d3");
+      game.movePiece("d1", "d2");
+
+      const expectedBoard = [
+        ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+        ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", " ", " ", " ", " ", " ", " ", " "],
+        [" ", "♘", " ", " ", " ", " ", " ", " "],
+        [" ", "♙", "♙", "♙", " ", " ", " ", " "],
+        ["♙", " ", "♗", "♕", "♙", "♙", "♙", "♙"],
+        [" ", " ", "♔", "♖", " ", "♗", "♘", "♖"],
+      ];
+
+      // Act
+      game.castling("white", "queen");
 
       // Assert
       expect(game.board).toEqual(expectedBoard);
